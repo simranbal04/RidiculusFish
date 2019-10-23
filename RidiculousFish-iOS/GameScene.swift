@@ -14,7 +14,66 @@ class GameScene: SKScene {
     private var label : SKLabelNode?
     private var spinnyNode : SKShapeNode?
     
-    override func didMove(to view: SKView) {
+    
+    var greenbush:SKSpriteNode!
+    var bush:SKSpriteNode!
+    var hanger:SKSpriteNode!
+    var fish:[SKSpriteNode] = []
+    
+    override func didMove(to view: SKView)
+    {
+    
+        
+        // movement for greenbushes- animation
+        let moveAction1 = SKAction.moveBy(x: 0, y: 10, duration: 1)
+        let moveAction2 = SKAction.moveBy(x: 0, y: -20, duration: 1)
+        
+        self.enumerateChildNodes(withName: "greenbush")
+        {
+            (node, stop) in
+            self.greenbush = node as! SKSpriteNode
+            let waterAnimation = SKAction.sequence([moveAction1,moveAction2,moveAction1])
+            
+            let waterforever = SKAction.repeatForever(waterAnimation)
+            self.greenbush.run(waterforever)
+        }
+        
+        // movement for pink bush- animation
+        let moveAction3 = SKAction.moveBy(x: 10, y: 0, duration: 1)
+        let moveAction4 = SKAction.moveBy(x: -20, y: 0, duration: 1)
+    
+        self.enumerateChildNodes(withName: "bush")
+        {
+            (node, stop) in
+            self.bush = node as! SKSpriteNode
+            let waterAnimation = SKAction.sequence([moveAction3,moveAction4,moveAction3])
+            
+            let waterforever = SKAction.repeatForever(waterAnimation)
+            self.bush.run(waterforever)
+        }
+        
+
+        func spawnfish()
+        {
+         // generating fishes
+            let randomFish = Int(CGFloat.random(in: 1 ... 8))
+            let fishs:SKSpriteNode = SKSpriteNode(imageNamed: "fish\(randomFish)")
+            
+            // generate random position
+            let randomXPos = CGFloat.random(in: -100 ... 0)
+            let randomYPos = CGFloat.random(in: 0 ... size.height/2-50)
+            fishs.position = CGPoint(x: randomXPos, y: randomYPos)
+            print("fish\([randomFish])")
+            
+            // adding the fish onto screen
+            addChild(fishs)
+            
+            // pushing fishs in array
+            self.fish.append(fishs)
+        }
+        
+        
+        
         
         // Get label node from scene and store it for use later
         self.label = self.childNode(withName: "//helloLabel") as? SKLabelNode
